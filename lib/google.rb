@@ -23,7 +23,7 @@ require 'json'
     def get
       Typhoeus::Config.verbose = false
 
-      new_query = "http://api.scraperapi.com/?api_key=#{ENV['SCRAPER_API_KEY']}&url=https://www.google.com/search?q=#{@search_query}&country_code=us"
+      new_query = "http://api.scraperapi.com/?api_key=#{ENV['SCRAPER_API_KEY']}&url=https://www.google.com/search?q=#{@search_query}&num=100&country_code=us"
 
       request = Typhoeus::Request.new(
         new_query
@@ -35,21 +35,23 @@ require 'json'
 
       end
 
-      def parse_results(html)
+    def parse_results(html)
         parsed_html = Nokogiri::HTML.parse(html)
 
         elements = parsed_html.xpath("//div[@class='rc']")
 
         data = []
-        elements.each do |serp|
+        elements.each_with_index do |serp, index|
           title = serp.xpath(".//div[@class='r']/a/h3").text
           description = serp.xpath(".//div[@class='s']/div/span").text
           url = serp.xpath(".//div[@class='r']/a/@href").text
+          position = index + 1
 
           result = {
             title: title,
             description: description,
-            url: url
+            url: url,
+            position: position
           }
 
           data << result

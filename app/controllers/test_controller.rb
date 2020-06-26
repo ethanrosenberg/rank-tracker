@@ -2,7 +2,7 @@
 class TestController < ApplicationController
 
   def search
-    Google::Request.new("apple").get
+    Google::Request.new("cv noise while driving").get
 
 
     byebug

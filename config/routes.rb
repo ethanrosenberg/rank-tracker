@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
+  #get 'projects/new_project'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  get '/', to: "test#search"
+  namespace :api do
+        namespace :v1 do
+          resources :projects, only: [:index, :create, :destroy, :update]
+        end
+  end
+
+  #get '/api/v1/projects', to: 'projects#new_project'
+
+  #get '/', to: "test#search"
+
 end
